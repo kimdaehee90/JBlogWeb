@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="CategoryDAO">
+	
+	<resultMap type="category" id="categoryResult">
+		<id property="categoryId" column="CATEGORY_ID"/>
+		<result property="blogId" column="BLOG_ID"/>
+		<result property="categoryName" column="CATEGORY_NAME"/>
+		<result property="displayType" column="DISPLAY_TYPE"/>
+		<result property="cntDisplayPost" column="CNT_DISPLAY_POST"/>
+		<result property="description" column="DESCRIPTION"/>		
+	</resultMap>	
+
+	<select id="insertCategory" parameterType="category" resultMap="categoryResult">
+		insert into 
+		category
+			(	
+				blog_id, 
+				category_id, 
+				category_name, 
+				display_type, 
+				description, 
+				cnt_display_post
+			) 
+		values
+			(	
+				#{blogId}, 
+				(select nvl(max(category_id), 0) + 1 from category), 
+				#{categoryName}, 
+				#{displayType}, 
+				#{description}, 
+				#{cntDisplayPost}
+			)			
+	</select>
+	
+	<select id="getCategory" parameterType="category" resultMap="categoryResult">
+		select * 
+		from category 
+		where category_id = #{categoryId}
+	</select>				
+	
+	<select id="getCategoryList" parameterType="category" resultMap="categoryResult">
+		select * 
+		from category 
+		where blog_id = #{blogId}
+		order by category_id asc
+	</select>
+	
+	<select id="updateCategory" parameterType="category" resultMap="categoryResult">
+		update category 
+		set 
+			category_name = #{categoryName}, 
+			display_type = #{displayType}, 
+			cnt_display_post = #{cntDisplayPost}, 
+			description = #{description} 
+		where category_id = #{categoryId}
+	</select>
+	
+	<select id="deleteCategory" parameterType="int" resultMap="categoryResult">
+		delete category 
+		where category_id= #{categoryId}
+	</select>
+
+
+</mapper>

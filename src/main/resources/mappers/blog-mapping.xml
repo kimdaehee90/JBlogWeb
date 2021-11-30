@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="BlogDAO">
+	
+	<resultMap type="blog" id="blogResult">
+		<id property="blogId" column="BLOG_ID"/>
+		<result property="title" column="TITLE"/>
+		<result property="tag" column="TAG"/>
+		<result property="cntDisplayPost" column="CNT_DISPLAY_POST"/>
+		<result property="status" column="STATUS"/>
+		<result property="userId" column="USER_ID"/>	
+		<result property="userName" column="USER_NAME"/>	
+	</resultMap>
+	
+	<select id="getBlogList" parameterType="blog" resultMap="blogResult">
+		select b.blog_id, b.cnt_display_post, b.status, b.title, b.tag, u.user_name 
+		from blog b, blog_user u 
+		where b.user_id=u.user_id 
+			<if test="searchCondition=='TITLE'">
+			and upper(b.title) like upper('%'||#{searchKeyword}||'%')
+			</if>
+			<if test="searchCondition=='TAG'">
+			and upper(b.tag) like upper('%'||#{searchKeyword}||'%')
+			</if>
+			<if test="searchCondition=='BLOGGER'">
+			and upper(u.user_name) like upper('%'||#{searchKeyword}||'%')
+			</if>
+			order by b.title
+	</select>
+					
+	<select id="getBlog" parameterType="blog" resultMap="blogResult">
+		select * 
+		from blog 
+		where blog_id=#{blogId}
+	</select>
+	
+	<select id="insertBlog" parameterType="blog" resultMap="blogResult">
+		insert into 
+		blog(blog_id, title, user_id) 
+		values(#{blogId}, #{title}, #{userId})
+	</select>	
+
+	
+	<select id="updateBlog" parameterType="blog" resultMap="blogResult">
+		update blog 	
+		set title=#{title}, tag=#{tag}, cnt_display_post= #{cntDisplayPost}
+		where blog_id=#{blogId}
+	</select>
+	
+	<select id="blogDeleteRequest" parameterType="blog" resultMap="blogResult">
+		update blog 
+		set status=#{status} 
+		where blog_id=#{blogId}
+	</select>
+	
+	<select id="deleteBlog" parameterType="int" resultMap="blogResult">
+		delete blog 
+		where blog_id=#{blogId}
+	</select>
+
+
+</mapper>
