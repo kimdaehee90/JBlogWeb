@@ -41,10 +41,13 @@ public class BlogController {
 	}
 
 	@RequestMapping("/getBlog.do")
-	public String getBlog(BlogVO vo,HttpSession session, Model model) {
+	public String getBlog(BlogVO blogVO,HttpSession session, Model model) {
 //		vo = (BlogVO) session.getAttribute("vo");
-		model.addAttribute("blog", blogService.getBlog(vo));
-		System.out.println("getBlog.do : " + blogService.getBlog(vo));
+//		BlogVO blog = blogService.getBlog(blogVO);
+
+//		session.setAttribute("blog", blog);
+		model.addAttribute("blog", blogService.getBlog(blogVO));
+		System.out.println("getBlog.do : " + blogService.getBlog(blogVO));
 		return "forward:index.jsp";
 	}
 	
@@ -66,7 +69,7 @@ public class BlogController {
 		return "forward:index.jsp";
 	}
 
-	@RequestMapping("/createView.do")
+	@RequestMapping("/createBlogView.do")
 	public String createView() {
 		return "blogcreate";
 	}

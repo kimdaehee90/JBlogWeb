@@ -22,7 +22,7 @@ public class BlogDAO {
 
 	private String BLOG_INSERT = "insert into blog(blog_id,title, tag, cnt_display_post, status,user_id) values (?,?,?,?,?,?)";
 	private String BLOG_UPDATE     = "update blog set title = ?, tag = ?, cnt_display_post = ? where blog_id = ?";
-	private String BLOG_GET = "select * from blog" ;
+	private String BLOG_GET = "select * from blog where blog_id=?";
 	private String BLOG_GET_List = "select b.blog_id, b.title, b.status, u.user_name from blog b, blog_user u where b.blog_id = u.user_id";
 	private String BLOG_GET_List_TITLE = "select b.blog_id, b.title, b.status, u.user_name from blog b, blog_user u where b.blog_id = u.user_id and title like '%'||?||'%' ";
 	private String BLOG_GET_List_TAG = "select b.blog_id, b.title, b.status, u.user_name from blog b, blog_user u where b.blog_id = u.user_id and tag like '%'||?||'%'";
@@ -64,27 +64,50 @@ public class BlogDAO {
 		}
 	}
 	
+//	public BlogVO getBlog(BlogVO vo) {
+//		BlogVO blog = null;
+//		try {
+//			conn = JDBCUtil.getConnection();
+//			stmt = conn.prepareStatement(BLOG_GET);
+//			stmt.setInt(1, vo.getBlogId());
+//			rs = stmt.executeQuery();
+//			if(rs.next()) {
+//				blog = new BlogVO();
+//				blog.setBlogId(rs.getInt("BLOG_ID"));
+//				blog.setTitle(rs.getString("TITLE"));
+//				blog.setTag(rs.getString("TAG"));
+//				blog.setCntDisplayPost(rs.getInt("CNT_DISPLAY_POST"));
+//				blog.setUserId(rs.getInt("USER_ID"));
+//				blog.setStatus(rs.getString("STATUS"));
+//			}
+//
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} finally {
+//			JDBCUtil.close(rs,stmt, conn);
+//		}
+//		return blog;
+//	}
 	public BlogVO getBlog(BlogVO vo) {
 		BlogVO blog = null;
 		try {
 			conn = JDBCUtil.getConnection();
 			stmt = conn.prepareStatement(BLOG_GET);
-//			stmt.setInt(1, vo.getUserId());
+			stmt.setInt(1, vo.getBlogId());
 			rs = stmt.executeQuery();
-			if(rs.next()) {
+			if (rs.next()) {
 				blog = new BlogVO();
 				blog.setBlogId(rs.getInt("BLOG_ID"));
 				blog.setTitle(rs.getString("TITLE"));
-				blog.setTag(rs.getString("TAG"));
 				blog.setCntDisplayPost(rs.getInt("CNT_DISPLAY_POST"));
-				blog.setUserId(rs.getInt("USER_ID"));
 				blog.setStatus(rs.getString("STATUS"));
+				blog.setTag(rs.getString("TAG"));
+				blog.setUserId(rs.getInt("USER_ID"));
 			}
-			
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			JDBCUtil.close(stmt, conn);
+			JDBCUtil.close(rs, stmt, conn);
 		}
 		return blog;
 	}

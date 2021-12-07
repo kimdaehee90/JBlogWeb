@@ -11,6 +11,7 @@
 <body>
 <center>
 <form action="/getBlogList.do" method="post">
+
 <table width="100%" height=320 border="0" cellpadding="0" cellspacing="0">
 <tr><td height=40 colspan="10">&nbsp;</td></tr>
 <tr>
@@ -28,7 +29,7 @@
 		<!-- 로그인에 성공한 경우 -->
 		<c:if test="${user != null }">
 			<c:if test="${blog == null  }">
-			<a href="createView.do"><b>블로그등록</b></a>&nbsp;&nbsp;
+			<a href="createBlogView.do"><b>블로그등록</b></a>&nbsp;&nbsp;
 			</c:if>	
 			<c:if test="${blog != null }">
 			<a href="blogmainView.do"><b>내 블로그로 가기</b></a>

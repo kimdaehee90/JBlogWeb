@@ -9,7 +9,6 @@
 </head>
 <body>
 <form action="login.do" method="post">
-<input name="blogId" type="hidden" value="${user.userId}"/>
 <table width="100%" height=320 border="0" cellpadding="0" cellspacing="0">
 <tr>
 	<td height=40 colspan="10">&nbsp;</td>
